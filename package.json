@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "a.js": "0.0.1",
+    "bootstrap": "^4.4.1",
+    "create-react-file": "^1.1.23",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "^3.3.0",
+    "redux": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
