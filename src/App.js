@@ -1,45 +1,52 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      todoList: []
+      todoList: [],
+      todo: "",
+      done: false
     };
-    this.onSubmit = this.onSubmit.bind(this)
-    this.addNewItem = this.addNewItem.bind(this)
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit = (e) => {
+  onSubmit = e => {
     e.preventDefault();
-    var newItemValue = this.refs.itemName.value;
-    
-    if(newItemValue) {
-      this.addNewItem({
-        value: newItemValue,
-        done: false
-      })
-    }
-    this.refs.itemName.value = ''
+    let todoList = this.state.todoList;
+    let obj = {todo: this.state.todo, done: this.state.done}
+
+    todoList.push(obj);
+    this.setState({ todoList: todoList });
+    this.setState({ todo: "", done: false });
+  };
+
+  onClickMarkDone = (e) => {
+    let todoList = this.state.todoList;
+    let index = e.target.value;
+    todoList[index].done = todoList[index].done ? false : true
+    this.setState({todoList: todoList});
   }
 
-  addNewItem = (item) => {
-    let arr = this.state.todoList;
-    arr.push(item)
-    this.setState({todoList: arr});
+  onClickClose = (e) => {
+    let todoList = this.state.todoList
+    todoList.splice(e.target.value, 1);
+    this.setState({todoList: todoList});
   }
 
   render() {
-    let items = this.state.todoList
-  
+    let items = this.state.todoList;
+
     const listItems = items.map((item, index) => (
       <li className="list-group-item " key={index}>
-        <div className="">
-          <span className="glyphicon glyphicon-ok icon" aria-hidden="true">
-            {item.value}
-          </span>
-          <button type="button" className="mark-done" onClick={this.onClickDone}>&radic;</button>
-          <button type="button" className="close" onClick={this.onClickClose}>&times;</button>
+        <div className={item.done === false ? "undone" : "done"}>
+          {item.todo}
+          <button type="button" className="mark-done" onClick={this.onClickMarkDone} value={index}>
+            &radic;
+          </button>
+          <button type="button" className="close" onClick={this.onClickClose} value={index}>
+            &times;
+          </button>
         </div>
       </li>
     ));
@@ -47,13 +54,22 @@ class App extends Component {
     return (
       <div id="main">
         <h1>Todo list</h1>
-        <ul className="list-group">
-          {listItems}
-        </ul>
         <form ref="form" onSubmit={this.onSubmit} className="form-inline">
-          <input type="text" ref="itemName" className="form-control" placeholder="add a new todo..."/>
-          <button type="submit" className="btn btn-primary">Add</button> 
+          <input
+            type="text"
+            ref="itemName"
+            className="form-control"
+            placeholder="add a new todo..."
+            value={this.state.todo}
+            onChange={event => {
+              this.setState({ todo: event.target.value, done: false });
+            }}
+          />
+          <button type="submit" className="btn btn-primary">
+            Add
+          </button>
         </form>
+        {listItems}
       </div>
     );
   }
