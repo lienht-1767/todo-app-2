@@ -1,41 +1,65 @@
 import React, { Component } from 'react';
-import TodoForm from './TodoForm'
-import TodoList from './TodoList'
 
-var todoItems = [];
 class App extends Component {
-  constructor (props) {
+  constructor(props){
     super(props);
-    this.addItem = this.addItem.bind(this);
-    this.removeItem = this.removeItem.bind(this);
-    this.markTodoDone = this.markTodoDone.bind(this);
-    this.state = {todoItems: todoItems};
+    this.state = {
+      todoList: []
+    };
+    this.onSubmit = this.onSubmit.bind(this)
+    this.addNewItem = this.addNewItem.bind(this)
   }
-  addItem = (todoItem) => {
-    todoItems.unshift({
-      index: todoItems.length+1, 
-      value: todoItem.newItemValue, 
-      done: false
-    });
-    this.setState({todoItems: todoItems});
+
+  // componentDidMount() {
+  //   let listToDo = this.state.todoList;
+  //   listToDo.push({text: "to do first", done: false});
+  //   listToDo.push({text: "to do seconds", done: false});
+  //   this.setState({todoList: listToDo});
+  // }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    var newItemValue = this.refs.itemName.value;
+    
+    if(newItemValue) {
+      this.addNewItem({
+        item: newItemValue,
+        done: false
+      })
+    }
   }
-  removeItem = (itemIndex) => {
-    todoItems.splice(itemIndex, 1);
-    this.setState({todoItems: todoItems});
+
+  addNewItem = (item) => {
+    let arr = this.state.todoList;
+    arr.push(item)
+    this.setState({todoList: arr});
   }
-  markTodoDone = (itemIndex) => {
-    var todo = todoItems[itemIndex];
-    todoItems.splice(itemIndex, 1);
-    todo.done = !todo.done;
-    todo.done ? todoItems.push(todo) : todoItems.unshift(todo);
-    this.setState({todoItems: todoItems});  
-  }
+
   render() {
+    let items = this.state.todoList
+  
+    const listItems = items.map((item, index) => (
+      <li className="list-group-item " key={index}>
+        <div className="">
+          <span className="glyphicon glyphicon-ok icon" aria-hidden="true">
+            {item}
+          </span>
+          <button type="button" className="mark-done" onClick={this.onClickDone}>&radic;</button>
+          <button type="button" className="close" onClick={this.onClickClose}>&times;</button>
+        </div>
+      </li>
+    ));
+
     return (
       <div id="main">
         <h1>Todo list</h1>
-        <TodoList items={todoItems} removeItem={this.removeItem} markTodoDone={this.markTodoDone}/>
-        <TodoForm addItem={this.addItem} />
+        <ul className="list-group">
+          {listItems}
+        </ul>
+        <form ref="form" onSubmit={this.onSubmit} className="form-inline">
+          <input type="text" ref="itemName" className="form-control" placeholder="add a new todo..."/>
+          <button type="submit" className="btn btn-primary">Add</button> 
+        </form>
       </div>
     );
   }
