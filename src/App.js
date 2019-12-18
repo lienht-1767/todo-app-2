@@ -10,13 +10,6 @@ class App extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // componentDidMount() {
-  //   let listToDo = this.state.todoList;
-  //   listToDo.push({text: "to do first", done: false});
-  //   listToDo.push({text: "to do seconds", done: false});
-  //   this.setState({todoList: listToDo});
-  // }
-
   onSubmit = e => {
     e.preventDefault();
     let todoList = this.state.todoList;
