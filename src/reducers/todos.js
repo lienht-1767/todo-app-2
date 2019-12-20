@@ -1,19 +1,17 @@
-import * as types from './../constants/actionTypes';
+import * as types from "./../constants/actionTypes";
 
-const todos = (state = [], action) => {
-  console.log(action.type)
+const intialState = [{ text: "abc", done: false }];
+const todos = (state = intialState, action) => {
   switch (action.type) {
     case types.ADD_NEW_TODO:
-      return [
-        ...state,
-        {
-          text: action.text,
-          done: false
-        }
-      ]
+      var todos = [...state, action.data];
+      return todos;
+    case types.TOGGLE_TODO:
+      var todos = [...state];
+      return todos;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default todos
+export default todos;

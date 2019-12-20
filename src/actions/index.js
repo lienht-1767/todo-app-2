@@ -1,6 +1,6 @@
-import * as types from './../constants/actionTypes';
+import * as types from "./../constants/actionTypes";
 
-export const todos = data => {
+export const addTodo = data => {
   return {
     type: types.ADD_NEW_TODO,
     data
